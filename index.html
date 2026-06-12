@@ -3,15 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Arqui - Calculadora de Presupuestos con IA</title>
+    <title>El Arqui - Presupuestos con IA</title>
     <style>
-        /* Unos estilos ultra básicos para que no se vea feo hoy */
-        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .drop-zone { border: 2px dashed #00bcd4; padding: 40px; border-radius: 8px; background-color: #e0f7fa; cursor: pointer; margin: 20px 0; }
-        button { background-color: #00bcd4; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        button:hover { background-color: #0097a7; }
-        .results { margin-top: 30px; padding: 20px; background: #fff3e0; border-left: 5px solid #ff9800; text-align: left; display: none; } /* Oculto por ahora */
+
+        :root {
+            --primary: #00adb5;
+            --primary-hover: #008c9e;
+            --dark: #222831;
+            --gray-bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text: #393e46;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+
+        header h1 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #777;
+            font-size: 1.05rem;
+            margin-top: 0;
+        }
+
+        .arqui-status {
+            display: inline-block;
+            background-color: #e3fafc;
+            color: #0c8599;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #b2c2bf;
+            padding: 50px 20px;
+            border-radius: 12px;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--primary);
+            background-color: #f0fbfc;
+            transform: scale(1.01);
+        }
+
+        .drop-zone-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+
+        .btn-analizar {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 4px 12px rgba(0, 173, 181, 0.25);
+        }
+
+        .btn-analizar:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-analizar:active {
+            transform: translateY(1px);
+        }
+
+        .examples-title {
+            font-size: 0.9rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 35px 0 15px 0;
+        }
+
+        .examples-grid {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .example-card {
+            flex: 1;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .example-card:hover {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            color: var(--primary);
+        }
+
+        .results {
+            margin-top: 35px;
+            padding: 25px;
+            background: #fff9db;
+            border-left: 5px solid #fab005;
+            border-radius: 4px 12px 12px 4px;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(250, 176, 5, 0.05);
+        }
+
+        .results h3 {
+            margin-top: 0;
+            color: #664d03;
+            font-size: 1.2rem;
+        }
+
+        .results ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0 0;
+        }
+
+        .results li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .results li:last-child {
+            border-bottom: none;
+        }
+
+        .price-tag {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
     </style>
 </head>
 <body>
@@ -19,29 +186,35 @@
     <div class="container">
         <header>
             <h1>👷‍♂️ El Arqui</h1>
-            <p><i>"Suba la foto de su fachada o habitación, y yo le calculo el presupuesto en un pinpon."</i></p>
+            <p>Calculadora de presupuestos de construcción con Inteligencia Artificial</p>
+            <div class="arqui-status">☕ Estado: Esperando obra, jefe...</div>
         </header>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-
         <section class="upload-section">
-            <div class="drop-zone">
-                <p>📸 Arrastre aquí la foto de la casa o haga clic para seleccionar</p>
+            <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <span class="drop-zone-icon">📸</span>
+                <p style="margin: 5px 0; font-weight: 500;">Arrastre aquí la foto de la casa o planos</p>
+                <p style="margin: 0; font-size: 0.85rem; color: #aaa;">Soporta JPG, PNG (Máx. 10MB)</p>
                 <input type="file" id="fileInput" accept="image/*" style="display: none;">
             </div>
 
-            <button id="btnAnalizar">🛠️ ¡Analizar Presupuesto!</button>
+            <button class="btn-analizar" id="btnAnalizar">🛠️ ¡Analizar Presupuesto!</button>
         </section>
 
-        <section class="results" id="panelResultados" style="display: block;">
+        <p class="examples-title">¿No tiene una foto? Pruebe un demo:</p>
+        <div class="examples-grid">
+            <div class="example-card">🏠 Fachada Moderna</div>
+            <div class="example-card">🧱 Obra Gris</div>
+            <div class="example-card">🛋️ Cuarto Interno</div>
+        </div>
+
+        <section class="results" id="panelResultados">
             <h3>📋 El veredicto del Arqui:</h3>
-            <p><strong>Estado:</strong> Viendo la obra... 🧐</p>
             <ul>
-                <li>🧱 <strong>Materiales:</strong> Bs. --,--</li>
-                <li>👷‍♂️ <strong>Mano de Obra:</strong> Bs. --,--</li>
-                <li>🎨 <strong>Acabados:</strong> Bs. --,--</li>
+                <li><span>🧱 <strong>Materiales Base:</strong></span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span>👷‍♂️ <strong>Mano de Obra:</strong></span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span>🎨 <strong>Acabados y Pintura:</strong></span> <span class="price-tag">Bs. --,--</span></li>
             </ul>
-            <p><i>*Nota: Este es un cálculo aproximado usando visión por IA.</i></p>
         </section>
     </div>
 
