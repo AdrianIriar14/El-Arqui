@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Arqui - Calculadora de Presupuestos con IA</title>
+    <style>
+        /* Unos estilos ultra básicos para que no se vea feo hoy */
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .drop-zone { border: 2px dashed #00bcd4; padding: 40px; border-radius: 8px; background-color: #e0f7fa; cursor: pointer; margin: 20px 0; }
+        button { background-color: #00bcd4; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0097a7; }
+        .results { margin-top: 30px; padding: 20px; background: #fff3e0; border-left: 5px solid #ff9800; text-align: left; display: none; } /* Oculto por ahora */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>👷‍♂️ El Arqui</h1>
+            <p><i>"Suba la foto de su fachada o habitación, y yo le calculo el presupuesto en un pinpon."</i></p>
+        </header>
+
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <section class="upload-section">
+            <div class="drop-zone">
+                <p>📸 Arrastre aquí la foto de la casa o haga clic para seleccionar</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <button id="btnAnalizar">🛠️ ¡Analizar Presupuesto!</button>
+        </section>
+
+        <section class="results" id="panelResultados" style="display: block;">
+            <h3>📋 El veredicto del Arqui:</h3>
+            <p><strong>Estado:</strong> Viendo la obra... 🧐</p>
+            <ul>
+                <li>🧱 <strong>Materiales:</strong> Bs. --,--</li>
+                <li>👷‍♂️ <strong>Mano de Obra:</strong> Bs. --,--</li>
+                <li>🎨 <strong>Acabados:</strong> Bs. --,--</li>
+            </ul>
+            <p><i>*Nota: Este es un cálculo aproximado usando visión por IA.</i></p>
+        </section>
+    </div>
+
+</body>
+</html>
