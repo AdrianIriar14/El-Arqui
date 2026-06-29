@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Arqui - Presupuestos con IA</title>
+    <style>
+        :root {
+            --primary: #00adb5;
+            --primary-hover: #008c9e;
+            --dark: #222831;
+            --gray-bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text: #393e46;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--text);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 650px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        header h1 { font-size: 2.2rem; color: var(--dark); margin-bottom: 5px; }
+        header p { color: #777; font-size: 1.05rem; margin-top: 0; }
+
+        .arqui-status {
+            display: inline-block;
+            background-color: #e3fafc;
+            color: #0c8599;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .drop-zone {
+            border: 2px dashed #b2c2bf;
+            padding: 50px 20px;
+            border-radius: 12px;
+            background-color: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .drop-zone:hover { border-color: var(--primary); background-color: #f0fbfc; }
+
+        .btn-analizar {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s ease;
+        }
+
+        .btn-analizar:hover { background-color: var(--primary-hover); }
+
+        .results {
+            margin-top: 35px;
+            padding: 25px;
+            background: #fff9db;
+            border-left: 5px solid #fab005;
+            border-radius: 4px 12px 12px 4px;
+        }
+
+        .price-tag { font-family: monospace; font-weight: bold; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>👷‍♂️ El Arqui</h1>
+            <p>Calculadora de presupuestos con IA</p>
+            <div class="arqui-status">Estado: Esperando obra...</div>
+        </header>
+
+        <section class="upload-section">
+            <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+                <p style="margin: 5px 0; font-weight: 500;">Haz clic aquí para subir tu plano</p>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+            <button class="btn-analizar" id="btnAnalizar">🛠️ ¡Analizar Presupuesto!</button>
+        </section>
+
+        <section class="results">
+            <h3>📋 El veredicto del Arqui:</h3>
+            <ul>
+                <li><span>🧱 Materiales:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span>👷‍♂️ Mano de Obra:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span>🎨 Acabados:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span>⏱️ Tiempo:</span> <span class="price-tag">-- Semanas</span></li>
+            </ul>
+        </section>
+    </div>
+
+    <script>
+        // Nueva funcionalidad: avisar cuando el archivo está listo
+        const fileInput = document.getElementById('fileInput');
+        fileInput.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                document.querySelector('.arqui-status').textContent = 'Estado: Imagen seleccionada: ' + this.files[0].name + ' ✅';
+            }
+        });
+
+        document.getElementById('btnAnalizar').addEventListener('click', function() {
+            if (fileInput.files.length === 0) {
+                alert("Por favor, selecciona una imagen primero.");
+                return;
+            }
+
+            document.querySelector('.arqui-status').textContent = 'Estado: Analizando plano con IA... ⏳';
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            fetch('/analizar', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tags = document.querySelectorAll('.price-tag');
+                tags[0].textContent = 'Bs. ' + data.materiales.toLocaleString('es-BO');
+                tags[1].textContent = 'Bs. ' + data.mano_obra.toLocaleString('es-BO');
+                tags[2].textContent = 'Bs. ' + data.acabados.toLocaleString('es-BO');
+                tags[3].textContent = data.tiempo + ' Semanas';
+
+                document.querySelector('.arqui-status').textContent = 'Estado: ¡Análisis completado! ✅';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.querySelector('.arqui-status').textContent = 'Estado: Error en el análisis ❌';
+            });
+        });
+    </script>
+</body>
+</html>
