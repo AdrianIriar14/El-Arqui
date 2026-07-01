@@ -1,4 +1,4 @@
--- 1. Materiales Principales (Material Base)
+--1. Materiales Principales (Material Base)
 INSERT INTO items_construccion (categoria, nombre, unidad, precio_unitario) VALUES ('Material Base', 'Cemento (Camba/Fancesa)', 'Bolsa 50kg', 66.50);
 INSERT INTO items_construccion (categoria, nombre, unidad, precio_unitario) VALUES ('Material Base', 'Ladrillo gambote', 'Unidad', 2.00);
 INSERT INTO items_construccion (categoria, nombre, unidad, precio_unitario) VALUES ('Material Base', 'Ladrillo 6 huecos', 'Unidad', 2.75);
