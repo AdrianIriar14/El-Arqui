@@ -102,22 +102,21 @@
                 <p style="margin: 5px 0; font-weight: 500;">Haz clic aquí para subir tu plano</p>
                 <input type="file" id="fileInput" accept="image/*" style="display: none;">
             </div>
-            <button class="btn-analizar" id="btnAnalizar">🛠️ ¡Analizar Presupuesto!</button>
+            <button class="btn-analizar" id="btnAnalizar"> ¡Analizar Presupuesto!</button>
         </section>
 
         <section class="results">
-            <h3>📋 El veredicto del Arqui:</h3>
+            <h3> El veredicto del Arqui:</h3>
             <ul>
-                <li><span>🧱 Materiales:</span> <span class="price-tag">Bs. --,--</span></li>
-                <li><span>👷‍♂️ Mano de Obra:</span> <span class="price-tag">Bs. --,--</span></li>
-                <li><span>🎨 Acabados:</span> <span class="price-tag">Bs. --,--</span></li>
-                <li><span>⏱️ Tiempo:</span> <span class="price-tag">-- Semanas</span></li>
+                <li><span> Materiales:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span> Mano de Obra:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span> Acabados:</span> <span class="price-tag">Bs. --,--</span></li>
+                <li><span> Tiempo estimado:</span> <span class="price-tag">-- Semanas</span></li>
             </ul>
         </section>
     </div>
 
     <script>
-        // Nueva funcionalidad: avisar cuando el archivo está listo
         const fileInput = document.getElementById('fileInput');
         fileInput.addEventListener('change', function() {
             if (this.files.length > 0) {
@@ -148,11 +147,11 @@
                 tags[2].textContent = 'Bs. ' + data.acabados.toLocaleString('es-BO');
                 tags[3].textContent = data.tiempo + ' Semanas';
 
-                document.querySelector('.arqui-status').textContent = 'Estado: ¡Análisis completado! ✅';
+                document.querySelector('.arqui-status').textContent = 'Estado: ¡Análisis completado! ';
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.querySelector('.arqui-status').textContent = 'Estado: Error en el análisis ❌';
+                document.querySelector('.arqui-status').textContent = 'Estado: Error en el análisis ';
             });
         });
     </script>
